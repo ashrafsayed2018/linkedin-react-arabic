@@ -1,8 +1,14 @@
+/*eslint-disable react/prop-types */
 import styled from "styled-components";
+import { signInApi } from "../redux/actions";
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export function Login(props) {
+  const navigate = useNavigate();
   return (
     <Container>
+      {props.user && navigate("/home")}
       <Nav>
         <a href="">
           <img src="/images/login-logo.svg" alt="" />
@@ -18,7 +24,7 @@ export default function Login() {
           <img src="/images/login-hero.svg" alt="" />
         </Hero>
         <Form>
-          <Google>
+          <Google onClick={() => props.signIn()}>
             <img src="/images/google.svg" alt="" />
             <span>Sign in with google</span>
           </Google>
@@ -27,6 +33,18 @@ export default function Login() {
     </Container>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: () => dispatch(signInApi()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 const Container = styled.div`
   padding: 0px;
 `;
@@ -53,10 +71,12 @@ const Join = styled.a`
   border-radius: 4px;
   color: rgba(0, 0, 0, 0.6);
   margin-right: 12px;
+  transition-duration: 167ms;
   &:hover {
     background-color: rgba(0, 0, 0, 0.08);
     color: rgba(0, 0, 0, 0.9);
     text-decoration: none;
+    cursor: pointer;
   }
 `;
 const SignIn = styled.a`
@@ -74,6 +94,7 @@ const SignIn = styled.a`
     background-color: rgba(112, 181, 249, 0.15);
     color: #0a66c2;
     text-decoration: none;
+    cursor: pointer;
   }
 `;
 const Section = styled.section`
