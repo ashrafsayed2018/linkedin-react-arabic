@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const RequireAuth = ({ user, children }) => {
+  console.log(user);
   const navigate = useNavigate();
   useEffect(() => {
     if (!user) {
